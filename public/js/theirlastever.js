@@ -129,7 +129,18 @@ class Enviroment
 	// DEBUG ONLY
 	reader()
 	{
-		trace(this.time_keep.H + " // " + this.time_keep.M + " // " + this.time_keep.S + " // " + this.time_light_type);
+		this.dispH = this.time_keep.H;
+		this.dispM = "";
+		this.dispS = "";
+
+		this.time_keep.M < 10 ? this.dispM = "0" + this.time_keep.M : this.dispM = this.time_keep.M;
+		this.time_keep.S < 10 ? this.dispS = "0" + this.time_keep.S : this.dispS = this.time_keep.S;
+
+		displayList.txt_h.innerHTML = this.dispH;
+		displayList.txt_m.innerHTML = this.dispM;
+		displayList.txt_s.innerHTML = this.dispS;
+
+		// trace(this.time_keep.H + " // " + this.time_keep.M + " // " + this.time_keep.S + " // " + this.time_light_type);
 	}
 }
 
@@ -147,16 +158,20 @@ function dispListPush(name, sel)
 
 function init_main()
 {
+	displayList = {};
+
+	dispListPush("testBG", ".test");
+	dispListPush("dispClock", ".disp-clock");
+	dispListPush("txt_h", ".txt-h");
+	dispListPush("txt_m", ".txt-m");
+	dispListPush("txt_s", ".txt-s");
+
 	system = {};
 
 	system.enviroment = new Enviroment(area_update);
 	system.enterFrameRun = false;
 	system.enterFrameLoopList = [];
 	system.enterFrameFunct = loop_system_update;
-
-	displayList = {};
-
-	dispListPush("testBG", ".test");
 
 	loop_system_add(enviroment_update);
 
@@ -170,6 +185,7 @@ function area_update()
 
 function set_dayLight()
 {
+	displayList.dispClock.classList.add("test_txt_" + system.enviroment.time_keep.L);
 	displayList.testBG.classList.add("test_light_" + system.enviroment.time_keep.L);
 }
 
