@@ -8,20 +8,40 @@ class Enviroment
 	constructor()
 	{
 		this.time_main = {};
+
+		// THROWAWAY
+		this.time_temp = {};
+		// RECORDED
 		this.time_keep = {};
+
+		this.time_light = [];
+		this.time_light.push("MORNING");
+		this.time_light.push("AFTERNOON");
+		this.time_light.push("EVENING");
+		this.time_light.push("NIGHT");
+
+		this.time_temp.H = 0;
+		this.time_temp.M = 0;
+		this.time_temp.S = 0;
+
+		this.time_temp.L = 0;
+
+		// UNITS
 		this.time_keep.H = 0;
 		this.time_keep.M = 0;
 		this.time_keep.S = 0;
+		// LIGHT
+		this.time_keep.L = 0;
+		// LIGHT DESCRIPTION
+		this.time_light_type = this.time_light[this.time_keep.L];
 	}
 
 	updater()
 	{
-		// trace(this.time_keep.H + " " + this.time_keep.M + " " + this.time_keep.S);
-
 		this.time_main = new Date();
-		this.time_H = this.time_main.getHours();
-		this.time_M = this.time_main.getMinutes();
-		this.time_S = this.time_main.getSeconds();
+		this.time_temp.H = this.time_main.getHours();
+		this.time_temp.M = this.time_main.getMinutes();
+		this.time_temp.S = this.time_main.getSeconds();
 
 		this.writer();
 	}
@@ -30,28 +50,22 @@ class Enviroment
 	{
 		this.timeChange = false;
 
-		if(this.time_keep.H !== this.time_H)
+		if(this.time_keep.H !== this.time_temp.H)
 		{
-			this.time_keep.H = this.time_H;
+			this.time_keep.H = this.time_temp.H;
 			this.timeChange = true;
-
-			trace("changeH");
 		}
 
-		if(this.time_keep.M !== this.time_M)
+		if(this.time_keep.M !== this.time_temp.M)
 		{
-			this.time_keep.M = this.time_M;
+			this.time_keep.M = this.time_temp.M;
 			this.timeChange = true;
-
-			trace("changeM");
 		}
 
-		if(this.time_keep.S !== this.time_S)
+		if(this.time_keep.S !== this.time_temp.S)
 		{
-			this.time_keep.S = this.time_S;
+			this.time_keep.S = this.time_temp.S;
 			this.timeChange = true;
-
-			trace("changeS");
 		}
 
 		if(this.timeChange)
@@ -60,14 +74,51 @@ class Enviroment
 		}
 	}
 
+	checkLight()
+	{
+		// NIGHT 0 - 4
+		if(this.time_keep.H >= 0 && this.time_keep.H <= 4)
+		{
+			this.time_temp.L = 3;
+		}
+
+		// MORNING 5 - 11
+		else if(this.time_keep.H >= 5 && this.time_keep.H <= 11)
+		{
+			this.time_temp.L = 0;
+		}
+
+		// AFTERNOON 12 - 16
+		else if(this.time_keep.H >= 12 && this.time_keep.H <= 16)
+		{
+			this.time_temp.L = 1;
+		}
+
+		// EVENING 17 - 20
+		else if(this.time_keep.H >= 17 && this.time_keep.H <= 20)
+		{
+			this.time_temp.L = 2;
+		}
+
+		// NIGHT
+		else
+		{
+			this.time_temp.L = 3;
+		}
+
+		if(this.time_keep.L !== this.time_temp.L)
+		{
+			this.time_keep.L = this.time_temp.L;
+
+			this.time_light_type = this.time_light[this.time_keep.L];
+		}
+	}
+
 	// DEBUG ONLY
 	reader()
 	{
-		trace(this.time_H + " // " + this.time_M + " // " + this.time_S);
+		trace(this.time_keep.H + " // " + this.time_keep.M + " // " + this.time_keep.S + " // " + this.time_light_type);
 	}
-
-
-
 }
 
 function pageLoad_init()
