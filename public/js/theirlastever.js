@@ -3,10 +3,14 @@ var trace = function(msg){ console.log(msg); };
 
 var system;
 
+var displayList;
+
 class Enviroment
 {
-	constructor()
+	constructor(areaUpdate)
 	{
+		this.areaUpdateFunct = areaUpdate;
+
 		this.time_main = {};
 
 		// THROWAWAY
@@ -73,6 +77,7 @@ class Enviroment
 			if(this.time_keep.S === 0 || !this.time_light_type)
 			{
 				this.checkLight();
+				this.areaUpdateFunct();
 			}
 
 			this.reader();
@@ -81,6 +86,8 @@ class Enviroment
 
 	checkLight()
 	{
+		trace("checkLight();");
+
 		// NIGHT 0 - 4
 		if(this.time_keep.H >= 0 && this.time_keep.H <= 4)
 		{
@@ -133,19 +140,43 @@ function pageLoad_init()
 	init_main();
 }
 
+function dispListPush(name, sel)
+{
+	displayList[name] = document.querySelector(sel);
+}
+
 function init_main()
 {
 	system = {};
 
-	system.enviroment = new Enviroment();
+	system.enviroment = new Enviroment(area_update);
 	system.enterFrameRun = false;
 	system.enterFrameLoopList = [];
 	system.enterFrameFunct = loop_system_update;
+
+	displayList = {};
+
+	dispListPush("testBG", ".test");
 
 	loop_system_add(enviroment_update);
 
 	loop_system_apply(true);
 }
+
+function area_update()
+{
+	set_dayLight();
+}
+
+function set_dayLight()
+{
+	displayList.testBG.classList.add("test_light_" + system.enviroment.time_keep.L);
+}
+
+
+
+
+// LOOP UTILS
 
 function loop_system_add(funct)
 {

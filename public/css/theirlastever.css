@@ -6,6 +6,32 @@ html, body
 	height: 100%;
 }
 
+.test
+{
+	width: 100%;
+	height: 100%;
+	position: relative;
+}
+
+.test_light_0
+{
+	background: yellow;
+}
+
+.test_light_1
+{
+	background: cyan;
+}
+
+.test_light_2
+{
+	background: orange;
+}
+
+.test_light_3
+{
+	background: black;
+}
 
 
 
