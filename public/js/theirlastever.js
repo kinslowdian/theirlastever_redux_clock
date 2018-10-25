@@ -33,7 +33,7 @@ class Enviroment
 		// LIGHT
 		this.time_keep.L = 0;
 		// LIGHT DESCRIPTION
-		this.time_light_type = this.time_light[this.time_keep.L];
+		this.time_light_type = false;
 	}
 
 	updater()
@@ -70,6 +70,11 @@ class Enviroment
 
 		if(this.timeChange)
 		{
+			if(this.time_keep.S === 0 || !this.time_light_type)
+			{
+				this.checkLight();
+			}
+
 			this.reader();
 		}
 	}
